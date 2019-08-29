@@ -14,3 +14,9 @@ This was done in O(n) time complexity and O(1) memory complexity by always keepi
 ## Substring
 
 This script counts all occurancies of words in array dictionary which are also contained in a given text. It return a hash with dictionary words as keys and how many were counted in the text as values. It doesn't add words that haven't appeared in the text to the hash.  
+
+## Bubble Sort
+
+This script uses [Bubble sort](https://en.wikipedia.org/wiki/Bubble_sort) to sort an array. It has 2 methods:   
+- bubble_sort! which uses bubble sort to sort the array in place by using the ">" comparison between elements
+- bubble_sort_by! which sorts the array in place by using a comparison provided by the block. If it wasn't given a block, it returns [] and puts out the error : "Error: No comparison given."  
