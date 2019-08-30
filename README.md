@@ -36,4 +36,8 @@ This is used for practicing Ruby by implementing some of the methods from Enumer
 
 ## Tic-Tac-Toe
 
-Tic-Tac-Toe recreated in console using Ruby.
+Tic-Tac-Toe recreated in terminal using Ruby.
+
+## Mastermind
+
+[Mastermind](https://en.wikipedia.org/wiki/Mastermind_(board_game)) game recreated in terminal using Ruby. For now you can only play as the decoder, trying to guess the code that the computer has generetaed.
