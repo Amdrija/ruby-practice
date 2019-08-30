@@ -33,3 +33,7 @@ This is used for practicing Ruby by implementing some of the methods from Enumer
 - my_count : Takes an object, a block or no arguments. If it is called with an object, it returns how many elements equal that object. If it is called with a block, it returns how many elements returned true when passed to the block. If it is called without arguments, it returns the number of elements in object.
 - my_map : Takes a proc or a block and applies it to the every element, returning an array of modified elements.
 - my_inject : Takes an accumulator and a block. It executes the block for every element and returns the result of calling the block on elements and accumulator. The block takes 2 arguments, accumulator and current element. If my_inject is called without an argument, it takes the first element as the accumulator. If it's called without a block, it returns nil.
+
+## Tic-Tac-Toe
+
+Tic-Tac-Toe recreated in console using Ruby.
