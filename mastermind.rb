@@ -18,11 +18,13 @@ class String
 end
 
 module Gameable
-  private
   def reset
+    @guesses = 3
     generate_code
     play
   end
+
+  private
 
   def color_code(guess_code)
     4.times do |i|
@@ -52,9 +54,11 @@ module Gameable
 
   def play
     guess_code = ""
-    @rounds.times do 
+    @guesses.times do 
       guess_code = play_round
       break if won?(guess_code)
+      @guesses -= 1
+      puts "You have #{@guesses} guesses remaining."
     end
 
     if won?(guess_code)
@@ -88,14 +92,12 @@ end
 
 class DecoderGame
   include Gameable
-  
+
   def initialize
-    @rounds = 1
     reset
   end
 
   def guess_code
-    
     return gets.chomp
   end
 
@@ -111,7 +113,7 @@ end
 
 class Game
   def initialize
-    reset
+    play
   end
 
   def greeting
@@ -140,14 +142,36 @@ class Game
     puts "\n"
   end
 
-  def reset
+
+  def play
     greeting
+    puts "Choose game mode: Decoder (D) or Coder(C)."
+    game_mode = gets.chomp.upcase
+    while game_mode != "D" && game_mode != "C"
+      game_mode = gets.chomp.upcase
+    end
+
+    if game_mode == "D"
+      if @decoder.nil?
+        @decoder = DecoderGame.new
+      else
+        @decoder.reset
+      end
+    else
+      puts "Coming soon"
+    end
+
+    puts "Choose different mode? Y/n"
+    again = gets.chomp.upcase
+    if again == "Y"
+      play
+    end
   end
+
 
 end
 
-
-DecoderGame.new
+Game.new
 
 
 
