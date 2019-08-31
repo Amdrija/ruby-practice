@@ -40,4 +40,5 @@ Tic-Tac-Toe recreated in terminal using Ruby.
 
 ## Mastermind
 
-[Mastermind](https://en.wikipedia.org/wiki/Mastermind_(board_game)) game recreated in terminal using Ruby. For now you can only play as the decoder, trying to guess the code that the computer has generetaed.
+[Mastermind](https://en.wikipedia.org/wiki/Mastermind_(board_game)) game recreated in terminal using Ruby. You can play as the decoder, trying to guess the computer generated code, or you can play as the coder and let the computer guess your code.  
+Computer guessing was done by generating a pool of all possible codes, and randomly selecting one. When the computer gets feedback about the code, it removes all codes that can't possible have returned that feedback. Then, from the updated pool, it chooses a code at random and repeats the process until it either guessed the code or ran out of guesses.
