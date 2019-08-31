@@ -1,7 +1,7 @@
 class String
   # colorization
-  def colorize(color_code)
-    "\e[#{color_code}m#{self}\e[0m"
+  def colorize(code_feedback)
+    "\e[#{code_feedback}m#{self}\e[0m"
   end
 
   def red
@@ -17,38 +17,51 @@ class String
   end
 end
 
+module GameOptions
+  NUMBER_OF_GUESSES = 12
+  CODE_LENGTH = 4
+end
+
 module Gameable
+  include GameOptions
   def reset
-    @guesses = 3
+    @guesses = NUMBER_OF_GUESSES
     generate_code
     play
   end
 
   private
 
-  def color_code(guess_code)
-    4.times do |i|
+  def code_feedback(guess_code, computer_evaluating = false)
+    computer_feedback = []
+    CODE_LENGTH.times do |i|
       if guess_code[i] == @code[i]
-        print guess_code[i].green
+        human_feedback = guess_code[i].green
+        feedback_color = "green"
       elsif @code.include?(guess_code[i])
-        print guess_code[i].yellow
+        human_feedback = guess_code[i].yellow
+        feedback_color = "yellow"
       else
-        print guess_code[i].red
+        human_feedback = guess_code[i].red
+        feedback_color = "red"
       end
+      computer_feedback.push({digit: guess_code[i], feedback_color: feedback_color})
+      print human_feedback unless computer_evaluating
     end
-    print "\n"
+    print "\n" unless computer_evaluating
+    computer_feedback
   end
 
   def play_round
     guess_code = ""
     loop do
-      puts "Give me a 4-digit code using nambers 0 to 5." if self.class == DecoderGame
+      puts "Give me a #{CODE_LENGTH}-digit code using nambers 0 to 5." if decoder_game?
       guess_code = self.guess_code
 
       break if code_valid?(guess_code)
     end
 
-    color_code(guess_code)
+    @last_guess_feedback = code_feedback(guess_code)
     guess_code
   end
 
@@ -58,7 +71,11 @@ module Gameable
       guess_code = play_round
       break if won?(guess_code)
       @guesses -= 1
-      puts "You have #{@guesses} guesses remaining."
+      if decoder_game?
+        puts "You have #{@guesses} guesses remaining." 
+      else
+        puts "Computer has #{@guesses} guesses remaining."
+      end
     end
 
     if won?(guess_code)
@@ -72,11 +89,27 @@ module Gameable
   end
 
   def win_message 
-    puts "Congratulations, you broke the code."
+    if decoder_game?
+      puts "Congratulations, you broke the code."
+    else
+      #put out a win message for the computer, because the computer is now 
+      #playing our game, and if he won, it means he cracked the player's code,
+      #so the player lost
+      puts "Unfortunately, the computer has managed to crack your code."
+      
+    end
   end
 
   def loss_message
-    puts "Unfortunately, you haven't been able to crack the code."
+    if decoder_game?
+      puts "Unfortunately, you haven't been able to crack the code."
+      puts "The code was #{@code}."
+    else
+      #put out a loss message for the computer, because the computer is now 
+      #playing our game, and if he lost, it means he didn't crackthe player's code,
+      #so the player won
+      puts "Congratulations, your code was too tough for the computer to break."
+    end
   end
 
   def won?(guess_code)
@@ -84,8 +117,12 @@ module Gameable
   end
 
   def code_valid?(code)
-    return false unless code.is_a?(String) && code.length == 4
+    return false unless code.is_a?(String) && code.length == CODE_LENGTH
     return code.split("").all? {|code| code >= "0" && code <= "5"}
+  end
+
+  def decoder_game?
+    return self.class == DecoderGame
   end
 
 end
@@ -105,13 +142,77 @@ class DecoderGame
 
   def generate_code
     @code = ""
-    4.times do
+    CODE_LENGTH.times do
       @code += rand(6).to_s
     end
   end
 end
 
+class CoderGame
+  include Gameable
+
+  def initialize
+    reset
+  end
+
+  def guess_code
+    remove_impossible_codes
+    @all_codes[rand(@all_codes.length)]
+  end
+
+  def reset
+    reset_last_guess_feedback
+    generate_all_codes
+    super
+  end
+
+  private  
+
+  def reset_last_guess_feedback
+    @last_guess_feedback = []
+    CODE_LENGTH.times do
+      @last_guess_feedback.push({digit: "1", feedback_color: "red"})
+    end
+  end
+
+  def generate_all_codes
+    @all_codes = []
+    6.times do |i|
+      6.times do |j|
+        6.times do |k|
+          6.times do |l|
+            @all_codes.push("#{i}#{j}#{k}#{l}")
+          end
+        end
+      end
+    end
+  end
+
+  def remove_impossible_codes
+    @all_codes.select! do |code|
+      possible_code?(code_feedback(code, true))
+    end
+  end
+
+  def possible_code?(code_feedback)
+    @last_guess_feedback.each_with_index do |digit_hash, i|
+      return false if digit_hash[:feedback_color] == "green" && code_feedback[i][:feedback_color] != "green"
+    end
+    return true
+  end
+
+  def generate_code
+    puts "Please enter your secret code for the computer to guess."
+    loop do
+      puts "Give me a #{CODE_LENGTH}-digit code using nambers 0 to 5."
+      @code = gets.chomp
+      break if code_valid?(@code)
+    end
+  end
+end
+
 class Game
+  include GameOptions
   def initialize
     play
   end
@@ -128,7 +229,7 @@ class Game
     puts "** secret code in the fewest number of ****" 
     puts "**************** guesses. *****************"
     puts "*******************************************"
-    puts "*The code contain 4 digits between 0 and 5*"
+    puts "*The code contain #{CODE_LENGTH} digits between 0 and 5*"
     puts "********** for example : 1354  ************"
     puts "* if you guessed a number and his position*"
     puts "** the number will upear in green color ***"
@@ -158,7 +259,11 @@ class Game
         @decoder.reset
       end
     else
-      puts "Coming soon"
+      if @coder.nil?
+        @coder = CoderGame.new
+      else
+        @coder.reset
+      end
     end
 
     puts "Choose different mode? Y/n"
@@ -172,7 +277,3 @@ class Game
 end
 
 Game.new
-
-
-
-
