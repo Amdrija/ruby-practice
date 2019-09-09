@@ -48,3 +48,16 @@ Recursive and iterative implementation of a function that returns the array of f
 
 ## Merge Sort
 Recursive implementation of merge sort.
+
+## Linked list
+Linked list implementation in Ruby. The class has following methods:
+- append(value): Inserts a node with the given value at the end of the list. Returns self.
+- prepend(value): Insert a node with the given value at the beginning of the list. Returns self.
+- to_s: Converts the list to a string in the format: (current.value) -> (next.value) etc. and returns it.
+- size: Returns the size of the list.
+- at(index): Returns the value at given index, if it doesn't exist or if index is out of bounds, returns nil.
+- pop: Removes the last node in the list and returns it's value.
+- contains?(value): Returns true if the list contains the value, otherwise returns false.
+- find(value): Returns the index of the first occurance of the value, otherwise returns nil.
+- insert_at(index, value): Inserts a node with the given value at the given index. If index is greater or equal than the size of the list it inserts the node at the end. If index is less than or equal to 0, the method inserts the node at the beginning of the list. Returns self.
+- remove_at(index): Removes the node at the given index. Returns self unless the index is greater than or equal to size of the list, index is lower than 0, list is empty or list ha 1 node. In any of the mentioned cases it returns nil
