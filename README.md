@@ -69,3 +69,7 @@ Binary search tree implementation in Ruby. The class has following methods:
 - print_ldr: Prints the tree using recursive inorder depth first search algorithm.
 - bfs(value): Searches for the first occurance of the given value in the tree using breadth first search algorithm and returns that node. Returns nil if the value doesn't exist in the tree.
 - dfs(value): Searches for the first occurance of the given value in the tree using iterative depth first search algorithm and returns that node. Returns nil if the value doesn't exist in the tree.
+
+## Knight Moves
+
+A program that calculates the shortes path for a knight to get from one chess cell to the other. It's implemented with breadth first search algorithm and a graph that contains each cell on the chess board. Two cells are neighbours if a knight can travel from one to the other in 1 move.
