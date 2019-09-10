@@ -61,3 +61,11 @@ Linked list implementation in Ruby. The class has following methods:
 - find(value): Returns the index of the first occurance of the value, otherwise returns nil.
 - insert_at(index, value): Inserts a node with the given value at the given index. If index is greater or equal than the size of the list it inserts the node at the end. If index is less than or equal to 0, the method inserts the node at the beginning of the list. Returns self.
 - remove_at(index): Removes the node at the given index. Returns self unless the index is greater than or equal to size of the list, index is lower than 0, list is empty or list ha 1 node. In any of the mentioned cases it returns nil
+
+## Binary Search Tree
+Binary search tree implementation in Ruby. The class has following methods:
+- build_tree(array): Builds a binary search tree from the given array.
+- addNode(value): Adds node with the given value to the binary search tree
+- print_ldr: Prints the tree using recursive inorder depth first search algorithm.
+- bfs(value): Searches for the first occurance of the given value in the tree using breadth first search algorithm and returns that node. Returns nil if the value doesn't exist in the tree.
+- dfs(value): Searches for the first occurance of the given value in the tree using iterative depth first search algorithm and returns that node. Returns nil if the value doesn't exist in the tree.
