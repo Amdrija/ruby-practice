@@ -4,8 +4,8 @@ class Board
     [field_number / 3, field_number % 3]
   end
 
-  def self.field_valid?(field_number)
-    return field_number >= "1" && field_number <= "9"
+  def self.field_valid?(field_number_string)
+    return field_number_string.length == 1 && field_number_string >= "1" && field_number_string <= "9"
   end
 
   def initialize
@@ -135,7 +135,6 @@ class Game
       @turn += 1
     end
 
-    @board
     winning_mark = winner
     if winning_mark
       winning_message(winning_mark)
@@ -188,4 +187,6 @@ class Game
   end
 end
 
-Game.new
+if __FILE__ == $0
+  Game.new
+end
