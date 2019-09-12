@@ -1,5 +1,5 @@
 class Board
-  @@blank_char = "-"
+  @@blank_char = "_"
 
   def self.blank_char
     @@blank_char
@@ -225,6 +225,106 @@ class Board
   end
 
   #*END OF #check_winner
+end
+
+class Player
+  attr_accessor :name, :mark
+  def initialize(name, mark)
+    @name = name
+    @mark = mark
+  end
+end
+
+class Game
+  TURNS = 6 * 7
+  def initialize
+    set_player_names
+    reset
+  end
+
+  def reset
+    @turns_left = TURNS
+    if @board.nil?
+      @board = Board.new
+    else
+      @board.reset
+    end
+    play
+  end
+
+  private
+  def play
+    winner_mark = false
+    display_board
+    until winner_mark || @turns_left == 0 
+      if @turns_left % 2 == 0
+        winner_mark = play_turn(@player_x)
+      else
+        winner_mark = play_turn(@player_o)
+      end
+      @turns_left -= 1
+    end
+
+    if winner_mark
+      winner = winner_mark == "X" ? @player_x : @player_o
+      winning_message(winner)
+    else
+      draw_message
+    end
+
+    if play_again?
+      reset
+    end
+  end
+
+  private
+
+  def play_again?
+    puts "Do you want to play again? Y/n"
+    return gets.chomp.upcase == "Y"
+  end
+
+  def winning_message(winner)
+
+    puts "Congratulations #{winner.name}, you won."
+  end
+
+  def draw
+    puts "It's a draw"
+  end
+
+  def play_turn(player)
+    
+    puts "#{player.name}, choose a column."
+    column = ""
+    loop do
+      column = gets.chomp
+      break if column_valid?(column)
+    end
+    @board.mark_board(player.mark, column.to_i)
+    display_board
+    @board.check_winner
+  end
+  def display_board
+    puts @board
+    puts "-------"
+    puts "0123456"
+  end
 
   
+  def set_player_names
+    @player_x = Player.new("","X")
+    @player_o = Player.new("","O")
+    puts "Player 1, what's your name?"
+    @player_x.name = gets.chomp
+
+    puts "Player 2, what's your name?"
+    @player_o.name = gets.chomp
+  end
+
+  def column_valid?(column)
+    column.length == 1 && column >= "0" && column <= "6"
+  end
 end
+
+Game.new

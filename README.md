@@ -73,3 +73,7 @@ Binary search tree implementation in Ruby. The class has following methods:
 ## Knight Moves
 
 A program that calculates the shortes path for a knight to get from one chess cell to the other. It's implemented with breadth first search algorithm and a graph that contains each cell on the chess board. Two cells are neighbours if a knight can travel from one to the other in 1 move.
+
+## Four in a row
+
+Recreation of [Connect 4](https://en.wikipedia.org/wiki/Connect_Four) in console using Ruby.

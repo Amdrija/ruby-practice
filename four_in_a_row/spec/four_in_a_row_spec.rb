@@ -1,6 +1,14 @@
 require "./four_in_a_row.rb"
 
 RSpec.describe Board do
+  describe "#reset" do
+    it "Resets the board with blank characters" do
+      board = Board.new
+      board.reset
+      expect(board.to_s).to eql("#{Board.blank_char * 7}\n" * 6)
+    end
+  end
+
   describe "#mark_board(mark, column)" do
     it "Adds the mark to the top of the given column" do
       board = Board.new
@@ -198,4 +206,8 @@ RSpec.describe Board do
   end
 
   #* END OF #check_winner TESTS
+end
+
+describe Game do
+  
 end
